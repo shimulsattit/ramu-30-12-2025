@@ -141,10 +141,10 @@
         }
 
         .navbar-custom {
-            background-color: var(--navbar-bg-color) !important;
+            background-color: var(--navbar-bg-color, #1e5540) !important;
             padding: 0 !important;
             min-height: 50px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
 
@@ -253,7 +253,7 @@
             height: 180px;
             object-fit: cover;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
         }
 
@@ -476,6 +476,8 @@
         @include('partials.header-template1')
     @elseif($currentTemplate === 'template_2')
         @include('partials.header-template2')
+    @elseif($currentTemplate === 'template_3')
+        @include('partials.header-template3')
     @else
         @include('partials.header')
     @endif
