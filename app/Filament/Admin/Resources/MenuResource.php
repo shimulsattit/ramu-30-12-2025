@@ -122,7 +122,6 @@ class MenuResource extends Resource
                     ->label('Parent')
                     ->default('—'),
                 Tables\Columns\TextColumn::make('order')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
