@@ -15,12 +15,12 @@
                 <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                     @if($slider->link)
                         <a href="{{ $slider->link }}" target="_blank">
-                            <img src="{{ $slider->image_url }}" class="d-block w-100" alt="{{ $slider->title ?? 'Slider Image' }}"
-                                style="height: 450px; object-fit: cover; object-position: center;" referrerpolicy="no-referrer">
+                            <img src="{{ $slider->image_url }}" class="d-block w-100 slider-img"
+                                alt="{{ $slider->title ?? 'Slider Image' }}" referrerpolicy="no-referrer">
                         </a>
                     @else
-                        <img src="{{ $slider->image_url }}" class="d-block w-100" alt="{{ $slider->title ?? 'Slider Image' }}"
-                            style="height: 450px; object-fit: cover; object-position: center;" referrerpolicy="no-referrer">
+                        <img src="{{ $slider->image_url }}" class="d-block w-100 slider-img"
+                            alt="{{ $slider->title ?? 'Slider Image' }}" referrerpolicy="no-referrer">
                     @endif
                     @if($slider->title)
                         <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
@@ -30,7 +30,7 @@
                 </div>
             @empty
                 <div class="carousel-item active">
-                    <div class="d-flex align-items-center justify-content-center bg-light" style="height: 450px;">
+                    <div class="d-flex align-items-center justify-content-center bg-light slider-img">
                         <div class="text-center text-muted">
                             <i class="fas fa-image fa-4x mb-3"></i>
                             <p>No sliders available.</p>

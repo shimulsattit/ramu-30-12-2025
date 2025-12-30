@@ -262,6 +262,20 @@
             transform: scale(1.05);
         }
 
+        /* Slider Image Height and Fit Fix */
+        .slider-img {
+            height: 550px;
+            object-fit: cover;
+            object-position: center top;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .slider-img {
+                height: 250px;
+            }
+        }
+
         /* Hover Dropdown - Show on hover instead of click */
         .navbar-custom .nav-item.dropdown:hover .dropdown-menu {
             display: block;
