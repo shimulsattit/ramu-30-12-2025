@@ -30,7 +30,7 @@ class PhotoGallery extends Model
             $id = GoogleDriveHelper::extractFileId($this->thumbnail_image_id);
 
             if ($id) {
-                return "https://drive.google.com/thumbnail?id={$id}&sz=w800";
+                return "https://drive.google.com/thumbnail?id={$id}&sz=w1920";
             }
         }
 

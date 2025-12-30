@@ -39,6 +39,7 @@
                                         <img src="{{ $gallery->thumbnail_url }}" 
                                              class="w-100 h-100 object-fit-cover" 
                                              alt="{{ $gallery->title }}"
+                                             referrerpolicy="no-referrer"
                                              onerror="this.onerror=null; this.src='https://via.placeholder.com/400x225?text=Preview+Unavailable';">
                                     @else
                                         <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
