@@ -31,9 +31,8 @@
         style="{{ $bgStyle }} color: white; padding: 1.5rem !important;">
         {{-- Debug: URL = {{ $gdriveUrl ?? 'NULL' }} --}}
         @if($message->image_url)
-            <div class="text-center mb-3">
-                <img src="{{ $message->image_url }}" alt="{{ $message->name }}" class="img-fluid"
-                    style="width: 200px; height: 250px; object-fit: cover; border: 3px solid white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);"
+            <div class="message-card-img-container mb-3 shadow-sm">
+                <img src="{{ $message->image_url }}" alt="{{ $message->name }}" class="message-card-img"
                     referrerpolicy="no-referrer">
             </div>
         @endif

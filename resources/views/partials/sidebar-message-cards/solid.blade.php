@@ -25,9 +25,8 @@
     <div class="card-body text-center"
         style="background-color: var(--header-bg-color); color: white; padding: {{ $cardPadding }} !important;">
         @if($message->image_url)
-            <div class="text-center mb-3">
-                <img src="{{ $message->image_url }}" alt="{{ $message->name }}" class="img-fluid"
-                    style="width: 200px; height: 250px; object-fit: cover; border: 3px solid white; border-radius: 15px;"
+            <div class="message-card-img-container mb-3 shadow-sm">
+                <img src="{{ $message->image_url }}" alt="{{ $message->name }}" class="message-card-img"
                     referrerpolicy="no-referrer">
             </div>
         @endif
