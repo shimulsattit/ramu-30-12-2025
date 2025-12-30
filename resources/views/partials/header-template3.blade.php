@@ -37,11 +37,11 @@
                     @endphp
                     @foreach($visibleButtons as $button)
                         <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold" style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
-                                                                                          color: {{ $button['text_color'] ?? '#ffffff' }}; 
-                                                                                          border: none; 
-                                                                                          border-radius: 4px; 
-                                                                                          padding: 4px 12px; 
-                                                                                          font-size: 0.75rem;"
+                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
+                                                                                                  border: none; 
+                                                                                                  border-radius: 4px; 
+                                                                                                  padding: 4px 12px; 
+                                                                                                  font-size: 0.75rem;"
                             target="{{ str_starts_with($button['url'] ?? '', 'http') ? '_blank' : '_self' }}">
                             {{ $button['label'] }}
                         </a>
@@ -156,16 +156,28 @@
 </div>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+<nav class="navbar navbar-expand-lg navbar-custom sticky-top"
+    style="background-color: #1e5540 !important; min-height: 55px !important; display: flex !important; visibility: visible !important; border-top: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
     <div class="container">
+        <!-- Debug Marker -->
+        <span
+            style="background: red; color: white; padding: 2px 8px; font-size: 10px; position: absolute; top: -15px; left: 10px; z-index: 10001; border-radius: 3px;">T3_NAV_LOADED</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @php
-                    $menus = $menus ?? \App\Models\Menu::whereNull('parent_id')->where('is_active', true)->with('children')->orderBy('order')->get();
+                    $menus = \App\Models\Menu::whereNull('parent_id')->where('is_active', true)->with('children')->orderBy('order')->get();
                 @endphp
+                <!-- Header Template: Template 3 -->
+                @if($menus->count() == 0)
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
+                    @if(auth()->check())
+                        <li class="nav-item"><a class="nav-link" href="{{ url('/admin/menus') }}"
+                                style="color: #ffc107 !important;">Add Menu Items</a></li>
+                    @endif
+                @endif
                 @forelse($menus as $menu)
                     @if($menu->children->count() > 0)
                         <li class="nav-item dropdown">
