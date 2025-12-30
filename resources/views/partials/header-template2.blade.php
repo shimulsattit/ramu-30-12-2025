@@ -161,6 +161,14 @@
                 @php
                     $menus = $menus ?? \App\Models\Menu::whereNull('parent_id')->where('is_active', true)->with('children')->orderBy('order')->get();
                 @endphp
+                <!-- Header Template: Template 2 -->
+                @if($menus->count() == 0)
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
+                    @if(auth()->check())
+                        <li class="nav-item"><a class="nav-link" href="{{ url('/admin/menus') }}"
+                                style="color: #ffc107 !important;">Add Menu Items</a></li>
+                    @endif
+                @endif
                 @forelse($menus as $menu)
                     @if($menu->children->count() > 0)
                         <li class="nav-item dropdown">

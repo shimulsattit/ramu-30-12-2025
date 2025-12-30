@@ -143,6 +143,9 @@
         .navbar-custom {
             background-color: var(--navbar-bg-color) !important;
             padding: 0 !important;
+            min-height: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
 
         .navbar-custom .navbar-nav {
@@ -234,6 +237,28 @@
 
         .navbar-custom .dropdown-item:hover::before {
             transform: scaleY(1);
+        }
+
+        /* Message Card Image Alignment Fix */
+        .message-card-img-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        .message-card-img {
+            width: 150px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .message-card-img:hover {
+            transform: scale(1.05);
         }
 
         /* Hover Dropdown - Show on hover instead of click */

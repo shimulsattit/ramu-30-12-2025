@@ -29,11 +29,11 @@
             <h6 class="mb-0 fw-bold">{{ $title }}</h6>
         </div>
         <div class="card-body text-center position-relative"
-            style="{{ $bgStyle }} color: white; padding: 1.5rem !important;">
+            style="{{ $bgStyle }} color: white; padding: 1.5rem !important; display: flex; flex-direction: column; align-items: center; justify-content: center;">
             @if($message->image_url)
-                <div class="text-center mb-3">
-                    <img src="{{ $message->image_url }}" alt="{{ $message->name }}" class="img-fluid"
-                        style="width: 150px; height: 180px; object-fit: cover; border: 3px solid {{ $settings['card_image_border_color'] ?? 'white' }}; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);"
+                <div class="message-card-img-container">
+                    <img src="{{ $message->image_url }}" alt="{{ $message->name }}" class="message-card-img"
+                        style="border: 3px solid {{ $settings['card_image_border_color'] ?? 'white' }};"
                         referrerpolicy="no-referrer">
                 </div>
             @endif

@@ -29,4 +29,34 @@ if ($status) {
     echo "<p style='color: red; font-weight: bold;'>Failed to create storage link.</p>";
     echo "<p>Please try running this command via SSH: <code>ln -s $storagePath $linkPath</code></p>";
 }
-echo "<hr><p>Return to <a href='/gallery'>Gallery</a></p>";
+echo "<hr><h3>System Optimization & Cache Clearing</h3>";
+
+$commands = [
+    'config:clear' => 'Configuration cache',
+    'route:clear' => 'Route cache',
+    'view:clear' => 'View cache',
+    'cache:clear' => 'Application cache',
+];
+
+foreach ($commands as $command => $label) {
+    echo "<p>Running: <code>php artisan $command</code>... ";
+    $output = [];
+    $resultCode = 0;
+    exec("php " . __DIR__ . "/../artisan $command 2>&1", $output, $resultCode);
+    if ($resultCode === 0) {
+        echo "<span style='color: green;'>Success</span>";
+    } else {
+        echo "<span style='color: orange;'>Warning: " . implode(' ', $output) . "</span>";
+    }
+    echo "</p>";
+}
+
+// Check for public/hot file
+$hotFile = __DIR__ . '/hot';
+if (file_exists($hotFile)) {
+    echo "<p style='color: red; font-weight: bold;'>Found 'public/hot' file! Deleting it...</p>";
+    unlink($hotFile);
+}
+
+echo "<hr><p>Return to <a href='/'>Homepage</a> | <a href='/gallery'>Gallery</a></p>";
+

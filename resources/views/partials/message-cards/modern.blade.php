@@ -6,12 +6,12 @@
             style="background-color: white; color: var(--primary-color); border-bottom: 3px solid var(--primary-color);">
             <h6 class="mb-0 fw-bold">{{ $title }}</h6>
         </div>
-        <div class="card-body text-center" style="background-color: white; padding: 1.5rem !important;">
+        <div class="card-body text-center"
+            style="background-color: white; padding: 1.5rem !important; display: flex; flex-direction: column; align-items: center; justify-content: center;">
             @if($message->image_url)
-                <div class="text-center mb-3">
-                    <img src="{{ $message->image_url }}" alt="{{ $message->name }}" class="img-fluid"
-                        style="width: 150px; height: 180px; object-fit: cover; border: none; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
-                        referrerpolicy="no-referrer">
+                <div class="message-card-img-container">
+                    <img src="{{ $message->image_url }}" alt="{{ $message->name }}" class="message-card-img"
+                        style="border: none;" referrerpolicy="no-referrer">
                 </div>
             @endif
             <h6 class="mb-1 fw-bold"
