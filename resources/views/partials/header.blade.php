@@ -119,40 +119,6 @@
                 {{-- Reserved for future use or can be removed --}}
             </div>
         </div>
-
-        {{-- News Ticker / Scrolling Bar --}}
-        @if($header->show_notice_ticker ?? true)
-            <div class="row mb-0">
-                <div class="col-12">
-                    <marquee onmouseover="this.stop();" onmouseout="this.start();"
-                        style="font-weight: 500; font-size: 0.95rem; color: var(--ticker-text-color); padding: 2px 0; margin: 0;">
-                        @php
-                            $tickerNotices = \App\Models\Notice::where('published_at', '<=', now())
-                                ->orderBy('published_at', 'desc')
-                                ->limit($header->notice_ticker_limit ?? 10)
-                                ->get();
-                        @endphp
-                        @if(isset($tickerNotices) && $tickerNotices->count() > 0)
-                            @foreach($tickerNotices as $notice)
-                                <a href="{{ $notice->link_url }}" class="text-decoration-none me-5"
-                                    style="transition: all 0.3s ease; font-size: 0.95rem; color: var(--ticker-text-color);">
-                                    <i class="fas fa-bell"
-                                        style="margin-right: 8px; font-size: 0.85rem; background: linear-gradient(135deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
-                                    <strong>{{ $notice->title }}</strong>
-                                </a>
-                            @endforeach
-                        @else
-                            <i class="fas fa-circle" style="font-size: 6px; vertical-align: middle; color: #ddd;"></i>
-                            <span style="margin-left: 8px;">Welcome to Barishal Cantonment Public School & College
-                                website.</span>
-                            <span style="margin: 0 15px;">•</span>
-                            <i class="fas fa-circle" style="font-size: 6px; vertical-align: middle; color: #ddd;"></i>
-                            <span style="margin-left: 8px;">Admission is going on for Session 2025.</span>
-                        @endif
-                    </marquee>
-                </div>
-            </div>
-        @endif
     </div>
 </div>
 
