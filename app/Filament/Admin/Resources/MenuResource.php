@@ -83,7 +83,6 @@ class MenuResource extends Resource
 
                         Forms\Components\TextInput::make('order')
                             ->label('Display Order')
-                            ->numeric()
                             ->default(0),
 
                         Forms\Components\Toggle::make('is_active')
