@@ -254,7 +254,7 @@
             object-fit: cover;
             border-radius: 12px;
             border: 3px solid white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
             transition: all 0.3s ease;
         }
 
