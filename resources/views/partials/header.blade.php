@@ -38,11 +38,11 @@
                     @foreach($visibleButtons as $button)
                         <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold"
                             style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
-                                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
-                                                                                                                  border: none; 
-                                                                                                                  border-radius: 4px; 
-                                                                                                                  padding: 4px 12px; 
-                                                                                                                  font-size: 0.75rem;"
+                                                                                                                          color: {{ $button['text_color'] ?? '#ffffff' }}; 
+                                                                                                                          border: none; 
+                                                                                                                          border-radius: 4px; 
+                                                                                                                          padding: 4px 12px; 
+                                                                                                                          font-size: 0.75rem;"
                             target="{{ str_starts_with($button['url'] ?? '', 'http') ? '_blank' : '_self' }}">
                             {{ $button['label'] }}
                         </a>
@@ -159,6 +159,9 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
     <div class="container">
+        <!-- Debug Marker -->
+        <span
+            style="background: red; color: white; padding: 2px 10px; font-size: 10px; position: absolute; top: 0; left: 0; z-index: 9999;">NAVBAR_LOADED</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
         </button>
