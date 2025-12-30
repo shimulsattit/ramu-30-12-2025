@@ -249,11 +249,12 @@
         }
 
         .message-card-img {
-            width: 150px;
-            height: 180px;
+            width: 200px;
+            height: 250px;
             object-fit: cover;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
         }
 
