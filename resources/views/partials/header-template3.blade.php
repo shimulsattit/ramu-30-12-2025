@@ -38,11 +38,11 @@
                     @foreach($visibleButtons as $button)
                         <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold"
                             style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
-                                                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
-                                                                                                                                  border: none; 
-                                                                                                                                  border-radius: 4px; 
-                                                                                                                                  padding: 4px 12px; 
-                                                                                                                                  font-size: 0.75rem;"
+                                                                                                                                          color: {{ $button['text_color'] ?? '#ffffff' }}; 
+                                                                                                                                          border: none; 
+                                                                                                                                          border-radius: 4px; 
+                                                                                                                                          padding: 4px 12px; 
+                                                                                                                                          font-size: 0.75rem;"
                             target="{{ str_starts_with($button['url'] ?? '', 'http') ? '_blank' : '_self' }}">
                             {{ $button['label'] }}
                         </a>
@@ -156,34 +156,56 @@
     </div>
 </div>
 
-@php
-    $allMenusCount = \App\Models\Menu::count();
-    $activeMenus = \App\Models\Menu::where(function ($q) {
-        $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
-    })->where('is_active', true)->with('children')->orderBy('order')->get();
-@endphp
-
-<div
-    style="background: #000; color: #ff0; padding: 10px; text-align: center; border-bottom: 3px solid #fff; position: relative; z-index: 10001;">
-    <strong>DEBUG:</strong> Menus Found: {{ $activeMenus->count() }} (Displaying below)
-</div>
-
 <!-- Navigation -->
-<div id="simple-menubar"
-    style="background-color: #1e5540 !important; min-height: 50px; display: block !important; visibility: visible !important; border-bottom: 2px solid #ffc107; box-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; z-index: 10000;">
+<nav class="navbar navbar-expand-lg navbar-custom sticky-top"
+    style="background-color: var(--navbar-bg-color, #1e5540) !important; min-height: 50px; display: flex !important; visibility: visible !important;">
     <div class="container">
-        <ul
-            style="list-style: none; display: flex; flex-wrap: wrap; margin: 0; padding: 10px 0; justify-content: center; align-items: center;">
-            @forelse($activeMenus as $menu)
-                <li style="margin: 5px 15px;">
-                    <a href="{{ $menu->url ?? '#' }}"
-                        style="color: #ffffff !important; font-weight: bold; text-decoration: none; font-size: 15px; text-transform: uppercase;">
-                        {{ $menu->title }}
-                    </a>
-                </li>
-            @empty
-                <li style="color: #fff;">NO_MENU_ITEMS_FOUND_IN_QUERY</li>
-            @endforelse
-        </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            style="border-color: rgba(255,255,255,0.5);">
+            <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                @php
+                    $menus = \App\Models\Menu::where(function ($q) {
+                        $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
+                    })->where('is_active', true)->with('children')->orderBy('order')->get();
+                @endphp
+                @forelse($menus as $menu)
+                    @if($menu->children->count() > 0)
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{ $menu->url ?? '#' }}"
+                                id="navbarDropdown{{ $menu->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                @if($menu->is_highlighted && $menu->highlight_color)
+                                    style="background-color: {{ $menu->highlight_color }} !important; color: #ffffff !important; font-weight: 600; padding: 8px 15px; border-radius: 5px;"
+                                @endif>
+                                {{ $menu->title }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown{{ $menu->id }}">
+                                @foreach($menu->children as $child)
+                                    <li>
+                                        <a class="dropdown-item" href="{{ $child->url ?? '#' }}" @if($child->is_highlighted && $child->highlight_color)
+                                            style="background-color: {{ $child->highlight_color }} !important; color: #ffffff !important; font-weight: 600; padding: 8px 15px; border-radius: 5px;"
+                                        @endif>
+                                            {{ $child->title }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ $menu->url ?? '#' }}" @if($menu->is_highlighted && $menu->highlight_color)
+                                style="background-color: {{ $menu->highlight_color }} !important; color: #ffffff !important; font-weight: 600; padding: 8px 15px; border-radius: 5px;"
+                            @endif>
+                                {{ $menu->title }}
+                            </a>
+                        </li>
+                    @endif
+                @empty
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                @endforelse
+            </ul>
+        </div>
     </div>
-</div>
+</nav>
