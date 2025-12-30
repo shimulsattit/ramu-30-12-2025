@@ -36,12 +36,13 @@
                             ->sortBy('order');
                     @endphp
                     @foreach($visibleButtons as $button)
-                        <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold" style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
-                                                                                                          color: {{ $button['text_color'] ?? '#ffffff' }}; 
-                                                                                                          border: none; 
-                                                                                                          border-radius: 4px; 
-                                                                                                          padding: 4px 12px; 
-                                                                                                          font-size: 0.75rem;"
+                        <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold"
+                            style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
+                                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
+                                                                                                                  border: none; 
+                                                                                                                  border-radius: 4px; 
+                                                                                                                  padding: 4px 12px; 
+                                                                                                                  font-size: 0.75rem;"
                             target="{{ str_starts_with($button['url'] ?? '', 'http') ? '_blank' : '_self' }}">
                             {{ $button['label'] }}
                         </a>
@@ -157,63 +158,46 @@
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom sticky-top"
-    style="background-color: #1e5540 !important; min-height: 55px !important; display: flex !important; visibility: visible !important; border-top: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-    <div class="container">
+    style="background-color: #ff0000 !important; min-height: 55px !important; display: block !important; visibility: visible !important; border: 5px solid yellow !important;">
+    <div class="container" style="background: rgba(255,255,255,0.1);">
         <!-- Debug Marker -->
         <span
-            style="background: red; color: white; padding: 2px 8px; font-size: 10px; position: absolute; top: -15px; left: 10px; z-index: 10001; border-radius: 3px;">T3_NAV_LOADED</span>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            style="background: black; color: yellow; padding: 5px 15px; font-weight: bold; font-size: 14px; position: fixed; top: 10px; left: 10px; z-index: 99999; border: 2px solid white;">DEBUG:
+            T3_NAVBAR_ACTIVE</span>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            style="background: white;">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="mainNav">
+
+        <div class="collapse navbar-collapse show" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @php
                     $menus = \App\Models\Menu::where(function ($q) {
                         $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
                     })->where('is_active', true)->with('children')->orderBy('order')->get();
                 @endphp
+
+                <li class="nav-item">
+                    <span class="nav-link" style="color: yellow !important; font-weight: bold;">[FOUND:
+                        {{ $menus->count() }}]</span>
+                </li>
+
                 <!-- Header Template: Template 3 -->
                 @if($menus->count() == 0)
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
-                    @if(auth()->check())
-                        <li class="nav-item"><a class="nav-link" href="{{ url('/admin/menus') }}"
-                                style="color: #ffc107 !important;">Add Menu Items</a></li>
-                    @endif
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}" style="color: white !important;">FALLBACK
+                            HOME</a></li>
                 @endif
-                @forelse($menus as $menu)
-                    @if($menu->children->count() > 0)
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="{{ $menu->url ?? '#' }}"
-                                id="navbarDropdown{{ $menu->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                @if($menu->is_highlighted && $menu->highlight_color)
-                                    style="background-color: {{ $menu->highlight_color }} !important; color: #ffffff !important; font-weight: 600; padding: 8px 15px; border-radius: 5px;"
-                                @endif>
-                                {{ $menu->title }}
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown{{ $menu->id }}">
-                                @foreach($menu->children as $child)
-                                    <li>
-                                        <a class="dropdown-item" href="{{ $child->url ?? '#' }}" @if($child->is_highlighted && $child->highlight_color)
-                                            style="background-color: {{ $child->highlight_color }} !important; color: #ffffff !important; font-weight: 600; padding: 8px 15px; border-radius: 5px;"
-                                        @endif>
-                                            {{ $child->title }}
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ $menu->url ?? '#' }}" @if($menu->is_highlighted && $menu->highlight_color)
-                                style="background-color: {{ $menu->highlight_color }} !important; color: #ffffff !important; font-weight: 600; padding: 8px 15px; border-radius: 5px;"
-                            @endif>
-                                {{ $menu->title }}
-                            </a>
-                        </li>
-                    @endif
 
+                @forelse($menus as $menu)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ $menu->url ?? '#' }}"
+                            style="color: white !important; font-weight: bold; border: 1px solid rgba(255,255,255,0.3); margin: 2px;">
+                            {{ $menu->title }}
+                        </a>
+                    </li>
                 @empty
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item text-white">NO_MENUS_IN_DATABASE</li>
                 @endforelse
             </ul>
         </div>
