@@ -37,11 +37,11 @@
                     @endphp
                     @foreach($visibleButtons as $button)
                         <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold" style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
-                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
-                                                                                                  border: none; 
-                                                                                                  border-radius: 4px; 
-                                                                                                  padding: 4px 12px; 
-                                                                                                  font-size: 0.75rem;"
+                                                                                          color: {{ $button['text_color'] ?? '#ffffff' }}; 
+                                                                                          border: none; 
+                                                                                          border-radius: 4px; 
+                                                                                          padding: 4px 12px; 
+                                                                                          font-size: 0.75rem;"
                             target="{{ str_starts_with($button['url'] ?? '', 'http') ? '_blank' : '_self' }}">
                             {{ $button['label'] }}
                         </a>
@@ -166,14 +166,6 @@
                 @php
                     $menus = $menus ?? \App\Models\Menu::whereNull('parent_id')->where('is_active', true)->with('children')->orderBy('order')->get();
                 @endphp
-                <!-- Header Template: Template 3 -->
-                @if($menus->count() == 0)
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
-                    @if(auth()->check())
-                        <li class="nav-item"><a class="nav-link" href="{{ url('/admin/menus') }}"
-                                style="color: #ffc107 !important;">Add Menu Items</a></li>
-                    @endif
-                @endif
                 @forelse($menus as $menu)
                     @if($menu->children->count() > 0)
                         <li class="nav-item dropdown">
