@@ -159,7 +159,9 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @php
-                    $menus = $menus ?? \App\Models\Menu::whereNull('parent_id')->where('is_active', true)->with('children')->orderBy('order')->get();
+                    $menus = \App\Models\Menu::where(function ($q) {
+                        $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
+                    })->where('is_active', true)->with('children')->orderBy('order')->get();
                 @endphp
                 <!-- Header Template: Template 1 -->
                 @if($menus->count() == 0)

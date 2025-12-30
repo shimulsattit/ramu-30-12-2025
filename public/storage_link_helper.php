@@ -68,10 +68,14 @@ try {
     echo "<h4>Data Checks:</h4><ul>";
     $menuCount = \App\Models\Menu::count();
     $activeMenuCount = \App\Models\Menu::where('is_active', true)->count();
+    $topLevelMenusNull = \App\Models\Menu::whereNull('parent_id')->count();
+    $topLevelMenusZero = \App\Models\Menu::where('parent_id', 0)->count();
     $theme = \App\Models\ThemeSetting::first();
 
     echo "<li>Menus (Total): <strong>$menuCount</strong></li>";
     echo "<li>Menus (Active): <strong>$activeMenuCount</strong></li>";
+    echo "<li>Top-level Menus (parent_id IS NULL): <strong>$topLevelMenusNull</strong></li>";
+    echo "<li>Top-level Menus (parent_id IS 0): <strong>$topLevelMenusZero</strong></li>";
     echo "<li>Selected Template: <strong>" . ($theme->homepage_template ?? 'template_1') . "</strong></li>";
     echo "<li>Navbar Color: <strong>" . ($theme->navbar_bg_color ?? 'N/A') . "</strong></li>";
     echo "</ul>";

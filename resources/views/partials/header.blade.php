@@ -38,11 +38,11 @@
                     @foreach($visibleButtons as $button)
                         <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold"
                             style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
-                                                                                                                          color: {{ $button['text_color'] ?? '#ffffff' }}; 
-                                                                                                                          border: none; 
-                                                                                                                          border-radius: 4px; 
-                                                                                                                          padding: 4px 12px; 
-                                                                                                                          font-size: 0.75rem;"
+                                                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
+                                                                                                                                  border: none; 
+                                                                                                                                  border-radius: 4px; 
+                                                                                                                                  padding: 4px 12px; 
+                                                                                                                                  font-size: 0.75rem;"
                             target="{{ str_starts_with($button['url'] ?? '', 'http') ? '_blank' : '_self' }}">
                             {{ $button['label'] }}
                         </a>
@@ -168,7 +168,9 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @php
-                    $menus = $menus ?? \App\Models\Menu::whereNull('parent_id')->where('is_active', true)->with('children')->orderBy('order')->get();
+                    $menus = \App\Models\Menu::where(function ($q) {
+                        $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
+                    })->where('is_active', true)->with('children')->orderBy('order')->get();
                 @endphp
                 <!-- Header Template: Default -->
                 @if($menus->count() == 0)
