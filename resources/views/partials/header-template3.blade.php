@@ -36,13 +36,12 @@
                             ->sortBy('order');
                     @endphp
                     @foreach($visibleButtons as $button)
-                        <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold"
-                            style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
-                                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
-                                                                                                                  border: none; 
-                                                                                                                  border-radius: 4px; 
-                                                                                                                  padding: 4px 12px; 
-                                                                                                                  font-size: 0.75rem;"
+                        <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold" style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
+                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
+                                                                                                  border: none; 
+                                                                                                  border-radius: 4px; 
+                                                                                                  padding: 4px 12px; 
+                                                                                                  font-size: 0.75rem;"
                             target="{{ str_starts_with($button['url'] ?? '', 'http') ? '_blank' : '_self' }}">
                             {{ $button['label'] }}
                         </a>
@@ -157,15 +156,12 @@
 </div>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-custom sticky-top"
-    style="display: block !important; visibility: visible !important; min-height: 50px !important; background-color: #1e5540 !important; border-bottom: 2px solid #ffc107;">
+<nav class="navbar navbar-expand-lg navbar-custom sticky-top">
     <div class="container">
-        <span class="text-white d-lg-none">Menu</span>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-            style="border: 1px solid white;">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse show" id="mainNav">
+        <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @php
                     $menus = $menus ?? \App\Models\Menu::whereNull('parent_id')->where('is_active', true)->with('children')->orderBy('order')->get();
