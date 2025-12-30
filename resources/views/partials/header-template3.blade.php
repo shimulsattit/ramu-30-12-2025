@@ -38,11 +38,11 @@
                     @foreach($visibleButtons as $button)
                         <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold"
                             style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
-                                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
-                                                                                                                  border: none; 
-                                                                                                                  border-radius: 4px; 
-                                                                                                                  padding: 4px 12px; 
-                                                                                                                  font-size: 0.75rem;"
+                                                                                                                          color: {{ $button['text_color'] ?? '#ffffff' }}; 
+                                                                                                                          border: none; 
+                                                                                                                          border-radius: 4px; 
+                                                                                                                          padding: 4px 12px; 
+                                                                                                                          font-size: 0.75rem;"
                             target="{{ str_starts_with($button['url'] ?? '', 'http') ? '_blank' : '_self' }}">
                             {{ $button['label'] }}
                         </a>
@@ -156,48 +156,37 @@
     </div>
 </div>
 
+@php
+    $allMenusCount = \App\Models\Menu::count();
+    $activeMenus = \App\Models\Menu::where(function ($q) {
+        $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
+    })->where('is_active', true)->with('children')->orderBy('order')->get();
+@endphp
+
+<div
+    style="background: #000; color: #fff; padding: 20px; text-align: center; border: 5px solid yellow; position: relative; z-index: 10001;">
+    <h1>NAVBAR DEBUG MODE</h1>
+    <p>Total Menus in DB: {{ $allMenusCount }}</p>
+    <p>Top Level Active Menus: {{ $activeMenus->count() }} (Template 3)</p>
+</div>
+
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom sticky-top"
-    style="background-color: #ff0000 !important; min-height: 55px !important; display: block !important; visibility: visible !important; border: 5px solid yellow !important;">
-    <div class="container" style="background: rgba(255,255,255,0.1);">
-        <!-- Debug Marker -->
-        <span
-            style="background: black; color: yellow; padding: 5px 15px; font-weight: bold; font-size: 14px; position: fixed; top: 10px; left: 10px; z-index: 99999; border: 2px solid white;">DEBUG:
-            T3_NAVBAR_ACTIVE</span>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-            style="background: white;">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
+    style="background-color: #1e5540 !important; min-height: 55px !important; display: block !important; visibility: visible !important; border-top: 2px solid #ffc107;">
+    <div class="container">
         <div class="collapse navbar-collapse show" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                @php
-                    $menus = \App\Models\Menu::where(function ($q) {
-                        $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
-                    })->where('is_active', true)->with('children')->orderBy('order')->get();
-                @endphp
-
-                <li class="nav-item">
-                    <span class="nav-link" style="color: yellow !important; font-weight: bold;">[FOUND:
-                        {{ $menus->count() }}]</span>
-                </li>
-
-                <!-- Header Template: Template 3 -->
-                @if($menus->count() == 0)
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}" style="color: white !important;">FALLBACK
-                            HOME</a></li>
-                @endif
-
-                @forelse($menus as $menu)
+                @forelse($activeMenus as $menu)
                     <li class="nav-item">
                         <a class="nav-link" href="{{ $menu->url ?? '#' }}"
-                            style="color: white !important; font-weight: bold; border: 1px solid rgba(255,255,255,0.3); margin: 2px;">
+                            style="color: white !important; font-weight: bold; border-right: 1px solid rgba(255,255,255,0.2);">
                             {{ $menu->title }}
                         </a>
                     </li>
                 @empty
-                    <li class="nav-item text-white">NO_MENUS_IN_DATABASE</li>
+                    <li class="nav-item">
+                        <span class="nav-link text-warning">NO_TOP_LEVEL_MENUS_FOUND</span>
+                    </li>
                 @endforelse
             </ul>
         </div>
