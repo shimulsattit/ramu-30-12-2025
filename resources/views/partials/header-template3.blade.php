@@ -38,11 +38,11 @@
                     @foreach($visibleButtons as $button)
                         <a href="{{ $button['url'] }}" class="btn btn-sm fw-bold"
                             style="background-color: {{ $button['bg_color'] ?? 'var(--primary-color)' }}; 
-                                                                                                                          color: {{ $button['text_color'] ?? '#ffffff' }}; 
-                                                                                                                          border: none; 
-                                                                                                                          border-radius: 4px; 
-                                                                                                                          padding: 4px 12px; 
-                                                                                                                          font-size: 0.75rem;"
+                                                                                                                                  color: {{ $button['text_color'] ?? '#ffffff' }}; 
+                                                                                                                                  border: none; 
+                                                                                                                                  border-radius: 4px; 
+                                                                                                                                  padding: 4px 12px; 
+                                                                                                                                  font-size: 0.75rem;"
                             target="{{ str_starts_with($button['url'] ?? '', 'http') ? '_blank' : '_self' }}">
                             {{ $button['label'] }}
                         </a>
@@ -164,31 +164,26 @@
 @endphp
 
 <div
-    style="background: #000; color: #fff; padding: 20px; text-align: center; border: 5px solid yellow; position: relative; z-index: 10001;">
-    <h1>NAVBAR DEBUG MODE</h1>
-    <p>Total Menus in DB: {{ $allMenusCount }}</p>
-    <p>Top Level Active Menus: {{ $activeMenus->count() }} (Template 3)</p>
+    style="background: #000; color: #ff0; padding: 10px; text-align: center; border-bottom: 3px solid #fff; position: relative; z-index: 10001;">
+    <strong>DEBUG:</strong> Menus Found: {{ $activeMenus->count() }} (Displaying below)
 </div>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-custom sticky-top"
-    style="background-color: #1e5540 !important; min-height: 55px !important; display: block !important; visibility: visible !important; border-top: 2px solid #ffc107;">
+<div id="simple-menubar"
+    style="background-color: #1e5540 !important; min-height: 50px; display: block !important; visibility: visible !important; border-bottom: 2px solid #ffc107; box-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; z-index: 10000;">
     <div class="container">
-        <div class="collapse navbar-collapse show" id="mainNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                @forelse($activeMenus as $menu)
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ $menu->url ?? '#' }}"
-                            style="color: white !important; font-weight: bold; border-right: 1px solid rgba(255,255,255,0.2);">
-                            {{ $menu->title }}
-                        </a>
-                    </li>
-                @empty
-                    <li class="nav-item">
-                        <span class="nav-link text-warning">NO_TOP_LEVEL_MENUS_FOUND</span>
-                    </li>
-                @endforelse
-            </ul>
-        </div>
+        <ul
+            style="list-style: none; display: flex; flex-wrap: wrap; margin: 0; padding: 10px 0; justify-content: center; align-items: center;">
+            @forelse($activeMenus as $menu)
+                <li style="margin: 5px 15px;">
+                    <a href="{{ $menu->url ?? '#' }}"
+                        style="color: #ffffff !important; font-weight: bold; text-decoration: none; font-size: 15px; text-transform: uppercase;">
+                        {{ $menu->title }}
+                    </a>
+                </li>
+            @empty
+                <li style="color: #fff;">NO_MENU_ITEMS_FOUND_IN_QUERY</li>
+            @endforelse
+        </ul>
     </div>
-</nav>
+</div>
