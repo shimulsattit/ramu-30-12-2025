@@ -25,7 +25,7 @@ class ManageMenuCardSettings extends Page
     // Hide from navigation - accessible via Menu Cards page button, super admin only
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->isSuperAdmin() ?? false;
+        return false;
     }
 
     public static function canAccess(): bool
