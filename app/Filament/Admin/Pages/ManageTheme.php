@@ -244,13 +244,7 @@ class ManageTheme extends Page
                     ->schema([
                         Forms\Components\Select::make('homepage_template')
                             ->label('Template Design')
-                            ->options([
-                                'template_1' => '📋 Template 1 - Default Layout (Current Design)',
-                                'template_2' => '🎨 Template 2 - Modern Grid Layout',
-                                'template_3' => '✨ Template 3 - Minimal Clean Layout',
-                                'template_4' => '📰 Template 4 - Full Width Magazine Style',
-                                'template_5' => '🎴 Template 5 - Card-Based Modern Layout',
-                            ])
+                            ->options(\App\Models\ThemeShowcase::where('is_active', true)->pluck('name', 'theme_key'))
                             ->default('template_1')
                             ->required()
                             ->live()
