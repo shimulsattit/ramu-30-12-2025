@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Filament\Admin\Pages;
+
+use Filament\Pages\Dashboard as BaseDashboard;
+
+class Dashboard extends BaseDashboard
+{
+    public function getColumns(): int|string|array
+    {
+        return 12; // Enable 12-column grid for precise control
+    }
+}
