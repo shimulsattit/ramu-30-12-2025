@@ -3,9 +3,6 @@
 @endphp
 
 <!-- Top Bar -->
-<div style="background: purple; color: white; text-align: center; font-weight: bold; padding: 10px;">
-    FILE CHECK: headers/header-template1.blade.php IS LOADED.
-</div>
 <div class="top-bar">
     <div class="container">
         <div class="row">
@@ -135,13 +132,6 @@
                         $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
                     })->where('is_active', true)->with('children')->orderBy('order')->get();
                 @endphp
-                
-                {{-- DEBUG VISIBILITY --}}
-                <li class="nav-item">
-                    <span style="color: yellow; font-weight: bold; padding: 10px;">
-                        DEBUG: Menus Found: {{ $menus->count() }}
-                    </span>
-                </li>
 
                 @forelse($menus as $menu)
                     @if($menu->children->count() > 0)
