@@ -18,11 +18,10 @@
                 @foreach($themes as $theme)
                     <div class="col-lg-4 col-md-6">
                         <div class="card h-100 shadow-sm border-0 template-card" style="transition: all 0.3s ease;">
-                            <div class="position-relative overflow-hidden rounded-top">
-                                <img src="{{ $theme->image }}" class="card-img-top" alt="{{ $theme->name }}"
-                                    style="height: 250px; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="card-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                    style="background: rgba(0, 106, 78, 0.8); opacity: 0; transition: opacity 0.3s ease;">
+                            <div class="position-relative overflow-hidden rounded-top image-wrapper">
+                                <img src="{{ $theme->image }}" class="card-img-top" alt="{{ $theme->name }}">
+                                <div
+                                    class="card-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
                                     <a href="{{ $theme->url ? $theme->url : route('home', ['theme_preview' => $theme->theme_key]) }}"
                                         target="{{ $theme->url ? '_blank' : '_self' }}"
                                         class="btn btn-light rounded-pill px-4 fw-bold shadow-sm transform-scale">
@@ -42,16 +41,43 @@
 
     <style>
         .template-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
         }
 
+        .image-wrapper {
+            height: 250px;
+            /* Height of the viewable area */
+            width: 100%;
+            position: relative;
+            background-color: #eee;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 4s ease-in-out;
+            /* Adjust speed as needed */
+            object-fit: cover;
+            object-position: top;
+        }
+
         .template-card:hover .card-img-top {
-            transform: scale(1.1);
+            transform: translateY(calc(-100% + 250px));
+            /* Scroll to bottom */
+        }
+
+        .card-overlay {
+            background: rgba(0, 106, 78, 0.4);
+            /* Lighter overlay to see image */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
         }
 
         .template-card:hover .card-overlay {
-            opacity: 1 !important;
+            opacity: 1;
         }
 
         .transform-scale:hover {
