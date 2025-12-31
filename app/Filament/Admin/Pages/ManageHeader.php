@@ -34,11 +34,10 @@ class ManageHeader extends Page
         }
 
         // Load Admin Tutorial Link
-        if (auth()->user()->hasRole('super_admin')) {
-            $this->data['admin_tutorial_link'] = \App\Models\Setting::get('admin_tutorial_link');
-            // Re-fill form to include this extra field
-            $this->form->fill(array_merge($this->form->getState(), ['admin_tutorial_link' => $this->data['admin_tutorial_link']]));
-        }
+        // Load for all users who can access this page
+        $this->data['admin_tutorial_link'] = \App\Models\Setting::get('admin_tutorial_link');
+        // Re-fill form to include this extra field
+        $this->form->fill(array_merge($this->form->getState(), ['admin_tutorial_link' => $this->data['admin_tutorial_link']]));
     }
 
     public function form(Form $form): Form
@@ -167,7 +166,7 @@ class ManageHeader extends Page
                     ])->columns(2),
 
                 Forms\Components\Section::make('Admin Settings')
-                    ->visible(fn() => auth()->user()->hasRole('super_admin'))
+                    // ->visible(fn() => auth()->user()->hasRole('super_admin')) // Temporarily disabled to ensure visibility
                     ->schema([
                         Forms\Components\TextInput::make('admin_tutorial_link')
                             ->label('Admin Video Tutorial Link (YouTube)')
