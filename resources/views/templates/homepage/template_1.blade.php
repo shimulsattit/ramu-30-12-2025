@@ -309,7 +309,10 @@
                                             <div class="col-12 col-lg-4">
                                                 <div class="card h-100 border-0 shadow-sm">
                                                     @if($news->image)
-                                                        <img src="{{ $news->image }}" class="card-img-top" alt="{{ $news->title }}"
+                                                        @php
+                                                            $optimizedImage = \App\Helpers\GoogleDriveHelper::getDirectUrl($news->image, 400);
+                                                        @endphp
+                                                        <img src="{{ $optimizedImage }}" class="card-img-top" alt="{{ $news->title }}"
                                                             style="height: 200px; object-fit: cover;" loading="lazy"
                                                             referrerpolicy="no-referrer">
                                                     @endif
@@ -359,7 +362,10 @@
                                                     <div class="col-12 col-lg-4">
                                                         <div class="card h-100 shadow-sm border-0">
                                                             @if($achievement->image)
-                                                                <img src="{{ $achievement->image }}" class="card-img-top"
+                                                                @php
+                                                                    $optimizedImage = \App\Helpers\GoogleDriveHelper::getDirectUrl($achievement->image, 400);
+                                                                @endphp
+                                                                <img src="{{ $optimizedImage }}" class="card-img-top"
                                                                     alt="{{ $achievement->title }}"
                                                                     style="height: 200px; object-fit: cover;" loading="lazy"
                                                                     referrerpolicy="no-referrer">
