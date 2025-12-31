@@ -12,8 +12,10 @@
         </div>
         <div class="card-body p-0">
             @if($locationMap->embed_code)
-                <div class="ratio ratio-16x9" style="min-height: 400px;">
-                    {!! $locationMap->embed_code !!}
+                <div style="width: 100%; min-height: 450px; overflow: hidden;">
+                    <div style="width: 100%; height: 450px;">
+                        {!! str_replace(['width="600"', 'height="450"'], ['width="100%"', 'height="100%"'], $locationMap->embed_code) !!}
+                    </div>
                 </div>
             @endif
         </div>
