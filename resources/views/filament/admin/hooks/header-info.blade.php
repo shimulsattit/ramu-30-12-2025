@@ -45,15 +45,21 @@
         color: rgba(255, 255, 255, 0.9) !important;
     }
 
-    .admin-header-info .border-gray-300 {
-        border-color: rgba(255, 255, 255, 0.3) !important;
+    /* School Name Specific Style */
+    .school-name-text {
+        color: #fbbf24 !important;
+        /* Amber/Gold color */
+        font-weight: 700 !important;
+        font-size: 1.05rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 </style>
 
 <div class="admin-header-info flex items-center gap-4 text-sm font-medium text-gray-500 dark:text-gray-400">
     <div class="hidden sm:flex items-center gap-2">
-        <x-heroicon-o-building-library class="w-4 h-4" />
-        <span>{{ \App\Models\HeaderSetting::first()?->site_name ?? 'Barishal Cantonment Public School & College' }}</span>
+        <x-heroicon-o-building-library class="w-5 h-5 text-white" />
+        <span
+            class="school-name-text">{{ \App\Models\HeaderSetting::first()?->site_name ?? 'Barishal Cantonment Public School & College' }}</span>
     </div>
     <div class="hidden sm:flex items-center gap-2 border-l border-gray-300 dark:border-gray-600 pl-4"
         x-data="{ time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }"
