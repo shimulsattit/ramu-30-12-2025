@@ -7,7 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\NewsEventController;
 use App\Http\Controllers\AchievementController;
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // News and Events routes
 Route::get('/news', [NewsEventController::class, 'index'])->name('news.index');
