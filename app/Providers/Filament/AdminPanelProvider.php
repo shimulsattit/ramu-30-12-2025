@@ -72,6 +72,10 @@ class AdminPanelProvider extends PanelProvider
                 \Filament\View\PanelsRenderHook::GLOBAL_SEARCH_BEFORE,
                 fn(): string => view('filament.admin.hooks.header-info')->render(),
             )
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::SIDEBAR_FOOTER,
+                fn(): string => view('filament.admin.hooks.footer-tutorial')->render(),
+            )
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
             ]);
