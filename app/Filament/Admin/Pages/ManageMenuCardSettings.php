@@ -40,6 +40,7 @@ class ManageMenuCardSettings extends Page
     {
         $this->form->fill([
             'template' => Setting::get('menu_card_template', 'template_1'),
+            'is_active' => (bool) Setting::get('menu_cards_active', true),
         ]);
     }
 
@@ -47,9 +48,14 @@ class ManageMenuCardSettings extends Page
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Menu Card Template')
-                    ->description('Select the design template for all menu cards on the homepage')
+                Forms\Components\Section::make('Menu Card Settings')
+                    ->description('Manage display settings for menu cards on the homepage')
                     ->schema([
+                        Forms\Components\Toggle::make('is_active')
+                            ->label('Enable Menu Cards Section')
+                            ->default(true)
+                            ->helperText('Toggle to show or hide the menu cards section on the homepage'),
+
                         Forms\Components\Select::make('template')
                             ->label('Card Template')
                             ->options([
@@ -59,6 +65,7 @@ class ManageMenuCardSettings extends Page
                             ])
                             ->default('template_1')
                             ->required()
+                            ->visible(fn(Forms\Get $get) => $get('is_active'))
                             ->helperText('This template will apply to all menu cards'),
                     ]),
             ])
@@ -81,6 +88,11 @@ class ManageMenuCardSettings extends Page
         Setting::updateOrCreate(
             ['key' => 'menu_card_template'],
             ['value' => $data['template']]
+        );
+
+        Setting::updateOrCreate(
+            ['key' => 'menu_cards_active'],
+            ['value' => $data['is_active']]
         );
 
         Notification::make()

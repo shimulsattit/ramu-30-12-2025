@@ -273,7 +273,7 @@
                 @endif
 
                 {{-- Menu Cards Section --}}
-                @if(isset($menuCards) && $menuCards->count() > 0)
+                @if(\App\Models\Setting::get('menu_cards_active', true) && isset($menuCards) && $menuCards->count() > 0)
                     @php
                         $globalTemplate = $settings['menu_card_template'] ?? 'template_1';
                     @endphp
