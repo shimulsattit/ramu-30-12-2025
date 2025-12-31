@@ -38,5 +38,22 @@ Route::get('/page/preview/{page}', [PageController::class, 'preview'])->name('pa
 // Access at: http://localhost/barishal/public/admin
 // All authentication handled by Filament
 
+// All authentication handled by Filament
+
+// Fix Menu Route (Temporary) - Added to help user sync menu
+Route::get('/fix-menu-data', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'MenuSeeder', '--force' => true]);
+        $seederOutput = \Illuminate\Support\Facades\Artisan::output();
+
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        $cacheOutput = \Illuminate\Support\Facades\Artisan::output();
+
+        return "<h1>Menu Fixed Successfully!</h1><p>You can now go to <a href='/'>Home</a></p><pre>Seeder Output:\n$seederOutput\n\nCache Output:\n$cacheOutput</pre>";
+    } catch (\Exception $e) {
+        return "<h1>Error</h1><pre>" . $e->getMessage() . "</pre>";
+    }
+});
+
 // Dynamic page route (must be last to avoid conflicts)
 Route::get('/{slug}', [PageController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('page.show');
