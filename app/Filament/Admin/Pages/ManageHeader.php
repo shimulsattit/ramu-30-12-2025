@@ -32,6 +32,13 @@ class ManageHeader extends Page
         } else {
             $this->form->fill();
         }
+
+        // Load Admin Tutorial Link
+        if (auth()->user()->hasRole('super_admin')) {
+            $this->data['admin_tutorial_link'] = \App\Models\Setting::get('admin_tutorial_link');
+            // Re-fill form to include this extra field
+            $this->form->fill(array_merge($this->form->getState(), ['admin_tutorial_link' => $this->data['admin_tutorial_link']]));
+        }
     }
 
     public function form(Form $form): Form
@@ -158,6 +165,17 @@ class ManageHeader extends Page
                             ->default(10)
                             ->helperText('Number of recent notices to show in the scrolling bar'),
                     ])->columns(2),
+
+                Forms\Components\Section::make('Admin Settings')
+                    ->visible(fn() => auth()->user()->hasRole('super_admin'))
+                    ->schema([
+                        Forms\Components\TextInput::make('admin_tutorial_link')
+                            ->label('Admin Video Tutorial Link (YouTube)')
+                            ->url()
+                            ->placeholder('https://youtube.com/watch?v=...')
+                            ->helperText('This icon will appear at the bottom of the admin panel sidebar.')
+                            ->columnSpanFull(),
+                    ]),
             ])
             ->statePath('data');
     }
@@ -166,7 +184,7 @@ class ManageHeader extends Page
     {
         return [
             Action::make('save')
-                ->label('Save Header Settings')
+                ->label('Save Settings')
                 ->submit('save'),
         ];
     }
@@ -174,6 +192,16 @@ class ManageHeader extends Page
     public function save(): void
     {
         $data = $this->form->getState();
+
+        // Handle Admin Tutorial Link (Save to Settings table)
+        if (isset($data['admin_tutorial_link'])) {
+            \App\Models\Setting::updateOrCreate(
+                ['key' => 'admin_tutorial_link'],
+                ['value' => $data['admin_tutorial_link']]
+            );
+            // Remove from data to avoid column error in HeaderSetting
+            unset($data['admin_tutorial_link']);
+        }
 
         $headerSetting = HeaderSetting::first();
 
@@ -185,7 +213,7 @@ class ManageHeader extends Page
 
         Notification::make()
             ->success()
-            ->title('Header settings saved successfully')
+            ->title('Settings saved successfully')
             ->send();
     }
 }
