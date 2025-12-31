@@ -57,9 +57,42 @@ Route::get('/fix-menu-data', function () {
             $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
         })->where('is_active', true)->get();
 
+        // 4. Check Theme & View Rendering
+        $themeSetting = \App\Models\ThemeSetting::first();
+        $currentTemplate = $themeSetting->homepage_template ?? 'template_1';
+
+        $viewName = 'partials.header'; // default
+        if ($currentTemplate === 'template_1')
+            $viewName = 'partials.header-template1';
+        if ($currentTemplate === 'template_2')
+            $viewName = 'partials.header-template2';
+        if ($currentTemplate === 'template_3')
+            $viewName = 'partials.header-template3';
+
+        $viewExists = \Illuminate\Support\Facades\View::exists($viewName);
+        $renderedView = "View not found";
+        if ($viewExists) {
+            try {
+                // We render it but capture just the nav part if possible, or usually just dump it all.
+                // We can't easily extract just the nav, so let's check if the raw HTML contains a known menu title.
+                $html = view($viewName)->render();
+                $firstMenu = $rootMenus->first();
+                $foundMenuTitle = $firstMenu ? str_contains($html, $firstMenu->title) : false;
+                $renderedView = $foundMenuTitle ? "Success: Found '" . $firstMenu->title . "' in rendered HTML" : "Failed: Menu title not found in HTML";
+                // $renderedView .= "\n\nSlice of HTML:\n" . substr(htmlspecialchars($html), 0, 500) . "..."; 
+            } catch (\Exception $e) {
+                $renderedView = "Error rendering view: " . $e->getMessage();
+            }
+        }
+
         $debugInfo = "Total Menus in DB: " . $menuCount . "\n";
         $debugInfo .= "Root Menus Found: " . $rootMenus->count() . "\n";
-        $debugInfo .= "Sample Root Menus: " . $rootMenus->pluck('title')->implode(', ');
+        $debugInfo .= "Sample Root Menus: " . $rootMenus->pluck('title')->implode(', ') . "\n\n";
+
+        $debugInfo .= "Active Theme Template: " . $currentTemplate . "\n";
+        $debugInfo .= "Target Header View: " . $viewName . "\n";
+        $debugInfo .= "View Exists: " . ($viewExists ? 'Yes' : 'No') . "\n";
+        $debugInfo .= "Render Test: " . $renderedView . "\n";
 
         return "<h1>Menu Debug & Fix</h1>
                 <p>Status: <strong>Ran Seeder & Cleared Cache</strong></p>
