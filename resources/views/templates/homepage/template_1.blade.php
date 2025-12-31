@@ -272,8 +272,8 @@
                     </div>
                 @endif
 
-                {{-- Menu Cards Section --}}
-                @if(isset($menuCards) && $menuCards->count() > 0)
+                {{-- Menu Cards Section Removed per user request --}}
+                @if(false && isset($menuCards) && $menuCards->count() > 0)
                     @php
                         $globalTemplate = $settings['menu_card_template'] ?? 'template_1';
                     @endphp
