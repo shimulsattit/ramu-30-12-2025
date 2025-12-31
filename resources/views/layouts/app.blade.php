@@ -442,6 +442,16 @@
                 padding-left: 20px;
             }
 
+            /* Smooth Mobile Collapse */
+            .navbar-collapse {
+                transition: height 0.4s ease-in-out;
+            }
+
+            .navbar-collapse.show {
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                margin-top: 10px;
+            }
+
             /* Slider */
             #heroCarousel .carousel-item img {
                 height: auto !important;
@@ -536,7 +546,7 @@
                     });
                 }
             });
-        });
+    });
     </script>
 
     <!-- Popup Modal Script -->
