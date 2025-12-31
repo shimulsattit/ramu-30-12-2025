@@ -11,7 +11,7 @@ class TutorialWidget extends Widget
 
     protected static ?int $sort = 10; // High sort order to appear at the bottom
 
-    protected int|string|array $columnSpan = 'full'; // Full width
+    protected int|string|array $columnSpan = 8; // Span 8 out of 12 columns
 
     // Only show if setting exists
     public static function canView(): bool
