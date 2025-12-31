@@ -43,64 +43,58 @@ Route::get('/page/preview/{page}', [PageController::class, 'preview'])->name('pa
 // Fix Menu Route (Temporary) - Added to help user sync menu
 Route::get('/fix-menu-data', function () {
     try {
-        // 1. Run Seeder
+        // 1. Clear ALL caches
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        \Illuminate\Support\Facades\Artisan::call('route:clear');
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+
+        // 2. Run Seeder
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'MenuSeeder', '--force' => true]);
         $seederOutput = \Illuminate\Support\Facades\Artisan::output();
 
-        // 2. Clear Cache
-        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-        $cacheOutput = \Illuminate\Support\Facades\Artisan::output();
+        // 3. Check file modification times
+        $headerFile = resource_path('views/partials/header-template1.blade.php');
+        $fileExists = file_exists($headerFile);
+        $fileTime = $fileExists ? date('Y-m-d H:i:s', filemtime($headerFile)) : 'NOT FOUND';
+        $fileSize = $fileExists ? filesize($headerFile) : 0;
 
-        // 3. Debug Data
+        // 4. Check if file has the fix
+        $fileContent = $fileExists ? file_get_contents($headerFile) : '';
+        $hasShowClass = str_contains($fileContent, 'collapse navbar-collapse show');
+        $hasPurpleBanner = str_contains($fileContent, 'FILE CHECK');
+
+        // 5. Debug Data
         $menuCount = \App\Models\Menu::count();
         $rootMenus = \App\Models\Menu::where(function ($q) {
             $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
         })->where('is_active', true)->get();
 
-        // 4. Check Theme & View Rendering
-        $themeSetting = \App\Models\ThemeSetting::first();
-        $currentTemplate = $themeSetting->homepage_template ?? 'template_1';
+        $debugInfo = "=== DATABASE ===" . "\n";
+        $debugInfo .= "Total Menus: " . $menuCount . "\n";
+        $debugInfo .= "Root Menus: " . $rootMenus->count() . "\n";
+        $debugInfo .= "Sample: " . $rootMenus->pluck('title')->take(3)->implode(', ') . "\n\n";
 
-        $viewName = 'partials.header'; // default
-        if ($currentTemplate === 'template_1')
-            $viewName = 'partials.header-template1';
-        if ($currentTemplate === 'template_2')
-            $viewName = 'partials.header-template2';
-        if ($currentTemplate === 'template_3')
-            $viewName = 'partials.header-template3';
+        $debugInfo .= "=== FILE STATUS ===" . "\n";
+        $debugInfo .= "File Exists: " . ($fileExists ? 'YES' : 'NO') . "\n";
+        $debugInfo .= "Last Modified: " . $fileTime . "\n";
+        $debugInfo .= "File Size: " . $fileSize . " bytes\n";
+        $debugInfo .= "Has 'show' class fix: " . ($hasShowClass ? 'YES ✓' : 'NO ✗') . "\n";
+        $debugInfo .= "Has Purple Banner: " . ($hasPurpleBanner ? 'YES ✓' : 'NO ✗') . "\n";
 
-        $viewExists = \Illuminate\Support\Facades\View::exists($viewName);
-        $renderedView = "View not found";
-        if ($viewExists) {
-            try {
-                // We render it but capture just the nav part if possible, or usually just dump it all.
-                // We can't easily extract just the nav, so let's check if the raw HTML contains a known menu title.
-                $html = view($viewName)->render();
-                $firstMenu = $rootMenus->first();
-                $foundMenuTitle = $firstMenu ? str_contains($html, $firstMenu->title) : false;
-                $renderedView = $foundMenuTitle ? "Success: Found '" . $firstMenu->title . "' in rendered HTML" : "Failed: Menu title not found in HTML";
-                // $renderedView .= "\n\nSlice of HTML:\n" . substr(htmlspecialchars($html), 0, 500) . "..."; 
-            } catch (\Exception $e) {
-                $renderedView = "Error rendering view: " . $e->getMessage();
-            }
-        }
-
-        $debugInfo = "Total Menus in DB: " . $menuCount . "\n";
-        $debugInfo .= "Root Menus Found: " . $rootMenus->count() . "\n";
-        $debugInfo .= "Sample Root Menus: " . $rootMenus->pluck('title')->implode(', ') . "\n\n";
-
-        $debugInfo .= "Active Theme Template: " . $currentTemplate . "\n";
-        $debugInfo .= "Target Header View: " . $viewName . "\n";
-        $debugInfo .= "View Exists: " . ($viewExists ? 'Yes' : 'No') . "\n";
-        $debugInfo .= "Render Test: " . $renderedView . "\n";
-
-        return "<h1>Menu Debug & Fix</h1>
-                <p>Status: <strong>Ran Seeder & Cleared Cache</strong></p>
-                <h3>Debug Info:</h3>
-                <pre style='background:#eee;padding:10px;'>$debugInfo</pre>
+        return "<h1>Complete System Check</h1>
+                <p>Status: <strong>All Caches Cleared & Seeder Ran</strong></p>
+                <h3>Diagnostic Info:</h3>
+                <pre style='background:#eee;padding:15px; border-left: 4px solid #333;'>$debugInfo</pre>
+                <h3>Next Steps:</h3>
+                <ol style='line-height: 2;'>
+                    <li>If 'Has show class fix' = NO, run: <code>git pull origin main</code></li>
+                    <li>After git pull, refresh this page again</li>
+                    <li>Then go to <a href='/'>Home Page</a> to check menu</li>
+                </ol>
                 <h3>Console Output:</h3>
-                <pre style='background:#ddd;padding:10px;'>Seeder:\n$seederOutput\nCache:\n$cacheOutput</pre>
-                <p><a href='/'>Go to Home Page</a></p>";
+                <pre style='background:#ddd;padding:10px; font-size: 12px;'>$seederOutput</pre>";
     } catch (\Exception $e) {
         return "<h1>Error</h1><pre>" . $e->getMessage() . "</pre>";
     }
