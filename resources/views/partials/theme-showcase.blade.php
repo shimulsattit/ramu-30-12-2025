@@ -23,7 +23,8 @@
                                     style="height: 250px; object-fit: cover; transition: transform 0.5s ease;">
                                 <div class="card-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
                                     style="background: rgba(0, 106, 78, 0.8); opacity: 0; transition: opacity 0.3s ease;">
-                                    <a href="{{ $theme->url }}" target="_blank"
+                                    <a href="{{ $theme->url ? $theme->url : route('home', ['theme_preview' => $theme->theme_key]) }}"
+                                        target="{{ $theme->url ? '_blank' : '_self' }}"
                                         class="btn btn-light rounded-pill px-4 fw-bold shadow-sm transform-scale">
                                         <i class="fas fa-eye me-2"></i> Live Preview
                                     </a>

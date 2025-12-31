@@ -158,6 +158,15 @@ class AppServiceProvider extends ServiceProvider
                 });
 
                 if ($themeSettings) {
+                    // LIVE PREVIEW LOGIC: Override homepage_template if query param exists
+                    if (request()->has('theme_preview')) {
+                        $previewKey = request('theme_preview');
+                        // Optional: Verify key exists in DB to prevent arbitrary strings
+                        // $isValid = \App\Models\ThemeShowcase::where('theme_key', $previewKey)->exists();
+                        // if ($isValid) ...
+                        $themeSettings->homepage_template = $previewKey;
+                    }
+
                     View::share('themeSettings', $themeSettings);
                     View::share('theme', $themeSettings); // Alias for easier access
                     // Merge theme settings into existing settings
