@@ -142,8 +142,8 @@
 
         .navbar-custom {
             background-color: var(--navbar-bg-color) !important;
-            padding: 0 !important;
-            min-height: 50px;
+            padding: 0.5rem 0 !important;
+            min-height: 60px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
