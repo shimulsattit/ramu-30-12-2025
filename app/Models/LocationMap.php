@@ -11,9 +11,12 @@ class LocationMap extends Model
 
     protected $fillable = [
         'title',
-        'embed_url',
-        'height',
+        'embed_code',
+        'address',
+        'phone',
+        'email',
         'is_active',
+        'order',
     ];
 
     protected $casts = [

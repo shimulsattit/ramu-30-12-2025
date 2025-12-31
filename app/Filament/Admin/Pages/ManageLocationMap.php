@@ -25,8 +25,10 @@ class ManageLocationMap extends Page
 
         $this->form->fill([
             'title' => $locationMap->title ?? 'Our Location',
-            'embed_url' => $locationMap->embed_url ?? '',
-            'height' => $locationMap->height ?? 400,
+            'embed_code' => $locationMap->embed_code ?? '',
+            'address' => $locationMap->address ?? '',
+            'phone' => $locationMap->phone ?? '',
+            'email' => $locationMap->email ?? '',
             'is_active' => $locationMap->is_active ?? false,
         ]);
     }
@@ -51,19 +53,27 @@ class ManageLocationMap extends Page
                             ->required()
                             ->maxLength(255),
 
-                        Forms\Components\Textarea::make('embed_url')
-                            ->label('Google Maps Embed URL')
-                            ->helperText('Paste the Google Maps embed URL here (e.g., https://www.google.com/maps/embed?pb=...)')
-                            ->placeholder('https://www.google.com/maps/embed?pb=...')
-                            ->rows(3)
+                        Forms\Components\Textarea::make('embed_code')
+                            ->label('Google Maps Embed Code')
+                            ->helperText('Paste the complete Google Maps iframe embed code here')
+                            ->placeholder('<iframe src="https://www.google.com/maps/embed?pb=..." ...></iframe>')
+                            ->rows(4)
                             ->columnSpanFull(),
 
-                        Forms\Components\TextInput::make('height')
-                            ->label('Map Height (px)')
-                            ->numeric()
-                            ->default(400)
-                            ->suffix('px')
-                            ->helperText('Height of the map in pixels'),
+                        Forms\Components\TextInput::make('address')
+                            ->label('Address')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+
+                        Forms\Components\TextInput::make('phone')
+                            ->label('Phone')
+                            ->tel()
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->maxLength(255),
                     ])
                     ->columns(2),
             ])
