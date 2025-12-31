@@ -31,94 +31,132 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\Message::observe($observer);
         \App\Models\NewsEvent::observe($observer);
         \App\Models\Achievement::observe($observer);
+        // Additional observers for global cache
+        \App\Models\WelcomeSection::observe($observer);
+        \App\Models\MenuCard::observe($observer);
+        \App\Models\Menu::observe($observer);
+        \App\Models\SidebarWidget::observe($observer);
+        \App\Models\ImportantLink::observe($observer);
+        \App\Models\LocationMap::observe($observer);
+        \App\Models\Setting::observe($observer);
+        \App\Models\ThemeSetting::observe($observer);
+        \App\Models\HeaderSetting::observe($observer);
+        \App\Models\FooterSetting::observe($observer);
 
         try {
             // Check if table exists to avoid errors during migration
             if (Schema::hasTable('settings')) {
-                $settings = \App\Models\Setting::all()->pluck('value', 'key');
+                $settings = \Illuminate\Support\Facades\Cache::remember('global.settings', 3600, function () {
+                    return \App\Models\Setting::all()->pluck('value', 'key');
+                });
                 View::share('settings', $settings);
             }
 
             // Fetch and share notices
             if (Schema::hasTable('notices')) {
-                $notices = \App\Models\Notice::whereNotNull('published_at')
-                    ->where('published_at', '<=', now())
-                    ->orderBy('published_at', 'desc')
-                    ->take(10)
-                    ->get();
+                $notices = \Illuminate\Support\Facades\Cache::remember('global.notices', 1800, function () {
+                    return \App\Models\Notice::whereNotNull('published_at')
+                        ->where('published_at', '<=', now())
+                        ->orderBy('published_at', 'desc')
+                        ->take(10)
+                        ->get();
+                });
                 View::share('notices', $notices);
             }
 
             // Fetch and share welcome section
             if (Schema::hasTable('welcome_sections')) {
-                $welcomeSection = \App\Models\WelcomeSection::active()->first();
+                $welcomeSection = \Illuminate\Support\Facades\Cache::remember('global.welcome_section', 3600, function () {
+                    return \App\Models\WelcomeSection::active()->first();
+                });
                 View::share('welcomeSection', $welcomeSection);
             }
 
             // Fetch and share menu cards
             if (Schema::hasTable('menu_cards')) {
-                $menuCards = \App\Models\MenuCard::active()->ordered()->with('items')->get();
+                $menuCards = \Illuminate\Support\Facades\Cache::remember('global.menu_cards', 3600, function () {
+                    return \App\Models\MenuCard::active()->ordered()->with('items')->get();
+                });
                 View::share('menuCards', $menuCards);
             }
 
             if (Schema::hasTable('menus')) {
-                $menus = \App\Models\Menu::whereNull('parent_id')
-                    ->where('is_active', true)
-                    ->with('children')
-                    ->orderBy('order')
-                    ->get();
+                $menus = \Illuminate\Support\Facades\Cache::remember('global.menus', 3600, function () {
+                    return \App\Models\Menu::whereNull('parent_id')
+                        ->where('is_active', true)
+                        ->with('children')
+                        ->orderBy('order')
+                        ->get();
+                });
                 View::share('menus', $menus);
             }
 
             if (Schema::hasTable('sliders')) {
-                $sliders = \App\Models\Slider::active()
-                    ->ordered()
-                    ->get();
+                $sliders = \Illuminate\Support\Facades\Cache::remember('global.sliders', 3600, function () {
+                    return \App\Models\Slider::active()
+                        ->ordered()
+                        ->get();
+                });
                 View::share('sliders', $sliders);
             }
 
             if (Schema::hasTable('messages')) {
-                $messages = \App\Models\Message::active()->ordered()->get();
+                $messages = \Illuminate\Support\Facades\Cache::remember('global.messages', 3600, function () {
+                    return \App\Models\Message::active()->ordered()->get();
+                });
                 View::share('messages', $messages);
 
-                // Share specific roles for easier access
+                // Share specific roles for easier access (derived from cached collection)
                 View::share('chiefPatron', $messages->where('type', 'Chief Patron')->first());
                 View::share('chairman', $messages->where('type', 'Chairman')->first());
                 View::share('principal', $messages->where('type', 'Principal')->first());
             }
 
             if (Schema::hasTable('sidebar_widgets')) {
-                $sidebarWidgets = \App\Models\SidebarWidget::active()->ordered()->get();
+                $sidebarWidgets = \Illuminate\Support\Facades\Cache::remember('global.sidebar_widgets', 3600, function () {
+                    return \App\Models\SidebarWidget::active()->ordered()->get();
+                });
                 View::share('sidebarWidgets', $sidebarWidgets);
             }
 
             // Fetch and share important links
             if (Schema::hasTable('important_links')) {
-                $importantLinks = \App\Models\ImportantLink::active()->ordered()->get();
+                $importantLinks = \Illuminate\Support\Facades\Cache::remember('global.important_links', 3600, function () {
+                    return \App\Models\ImportantLink::active()->ordered()->get();
+                });
                 View::share('importantLinks', $importantLinks);
             }
 
             // Fetch and share location map
             if (Schema::hasTable('location_maps')) {
-                $locationMap = \App\Models\LocationMap::active()->first();
+                $locationMap = \Illuminate\Support\Facades\Cache::remember('global.location_map', 3600, function () {
+                    return \App\Models\LocationMap::active()->first();
+                });
                 View::share('locationMap', $locationMap);
             }
 
             // Fetch and share footer settings
             if (Schema::hasTable('footer_settings')) {
-                $footerSettings = \App\Models\FooterSetting::first();
+                $footerSettings = \Illuminate\Support\Facades\Cache::remember('global.footer_settings', 3600, function () {
+                    return \App\Models\FooterSetting::first();
+                });
                 View::share('footerSettings', $footerSettings);
             }
 
             // Fetch and share header settings
             if (Schema::hasTable('header_settings')) {
-                $headerSettings = \App\Models\HeaderSetting::first();
+                $headerSettings = \Illuminate\Support\Facades\Cache::remember('global.header_settings', 3600, function () {
+                    return \App\Models\HeaderSetting::first();
+                });
                 View::share('headerSettings', $headerSettings);
             }
 
             // Fetch and share theme settings (including homepage template)
             if (Schema::hasTable('theme_settings')) {
-                $themeSettings = \App\Models\ThemeSetting::first();
+                $themeSettings = \Illuminate\Support\Facades\Cache::remember('global.theme_settings', 3600, function () {
+                    return \App\Models\ThemeSetting::first();
+                });
+
                 if ($themeSettings) {
                     View::share('themeSettings', $themeSettings);
                     View::share('theme', $themeSettings); // Alias for easier access
