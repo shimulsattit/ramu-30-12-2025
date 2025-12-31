@@ -130,7 +130,7 @@
              <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarContent">
+        <div class="collapse navbar-collapse show" id="navbarContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 justify-content-between">
                 @php
                     $menus = \App\Models\Menu::where(function($q){
