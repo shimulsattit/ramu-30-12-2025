@@ -419,6 +419,9 @@
                         </div>
                     </div>
                 @endif
+
+                {{-- Theme Showcase Section --}}
+                @include('partials.theme-showcase')
             </div>
 
             <!-- Sidebar Column -->
