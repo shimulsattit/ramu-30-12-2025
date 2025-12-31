@@ -15,7 +15,7 @@ class GoogleDriveHelper
      * @param string|null $url
      * @return string|null
      */
-    public static function getDirectUrl(?string $url): ?string
+    public static function getDirectUrl(?string $url, int $width = 1920): ?string
     {
         if (empty($url)) {
             return null;
@@ -35,9 +35,8 @@ class GoogleDriveHelper
         $fileId = self::extractFileId($url);
 
         if ($fileId) {
-            // Use thumbnail endpoint with large size for reliable image embedding
-            // This bypasses virus scan warnings and loads faster
-            return "https://drive.google.com/thumbnail?id={$fileId}&sz=w1920";
+            // Use thumbnail endpoint with custom size
+            return "https://drive.google.com/thumbnail?id={$fileId}&sz=w{$width}";
         }
 
         // If we couldn't extract the file ID, return the original URL
