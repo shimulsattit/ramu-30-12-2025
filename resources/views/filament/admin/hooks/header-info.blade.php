@@ -1,6 +1,5 @@
 <style>
-    /* Force Green Header */
-    .fi-header,
+    /* Force Green Topbar ONLY */
     .fi-topbar {
         background-color: #006a4e !important;
         /* BCPSC Green */
@@ -8,8 +7,16 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
 
-    /* Ensure text and icons in header are white */
-    .fi-topbar .fi-icon-btn {
+    /* Do NOT style the page header (Dashboard title area) */
+    .fi-header {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* Ensure text and icons in topbar are white */
+    .fi-topbar .fi-icon-btn,
+    .fi-topbar .fi-topbar-item-label,
+    .fi-topbar .fi-btn {
         color: rgba(255, 255, 255, 0.9) !important;
     }
 
@@ -17,8 +24,9 @@
         background-color: rgba(0, 0, 0, 0.1) !important;
     }
 
-    /* User menu adjustments */
-    .fi-user-menu-trigger {
+    /* User menu adjustments inside topbar */
+    .fi-user-menu-trigger,
+    .fi-user-menu-trigger span {
         color: white !important;
     }
 
