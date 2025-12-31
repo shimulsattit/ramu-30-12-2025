@@ -4,8 +4,8 @@
             ওয়েবসাইট ব্যবহারের নির্দেশনা
         </x-slot>
 
-        <div
-            class="w-full h-[500px] rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800">
+        <div class="w-full rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800"
+            style="height: 500px !important; min-height: 500px;">
             @if($embedUrl)
                 <iframe class="w-full h-full" src="{{ $embedUrl }}" title="Website Tutorial" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
