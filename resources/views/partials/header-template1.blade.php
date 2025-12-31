@@ -3,6 +3,9 @@
 @endphp
 
 <!-- Top Bar -->
+<div style="background: purple; color: white; text-align: center; font-weight: bold; padding: 10px;">
+    FILE CHECK: headers/header-template1.blade.php IS LOADED.
+</div>
 <div class="top-bar">
     <div class="container">
         <div class="row">
