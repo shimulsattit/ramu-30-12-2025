@@ -100,12 +100,12 @@ class ManageHeader extends Page
                         Forms\Components\TextInput::make('site_name')
                             ->label('School Name (English)')
                             ->required()
-                            ->default('BARISHAL CANTONMENT PUBLIC SCHOOL & COLLEGE')
+                            ->default(env('APP_NAME', 'School Name'))
                             ->maxLength(255),
                         Forms\Components\TextInput::make('site_name_bangla')
                             ->label('School Name (Bangla)')
                             ->required()
-                            ->default('বরিশাল ক্যান্টনমেন্ট পাবলিক স্কুল ও কলেজ')
+                            ->default('স্কুলের নাম (বাংলা)')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('eiin')
                             ->label('EIIN & Location')

@@ -11,8 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('header_settings', function (Blueprint $table) {
-            $table->boolean('show_notice_ticker')->default(true)->after('action_buttons');
-            $table->integer('notice_ticker_limit')->default(10)->after('show_notice_ticker');
+            if (!Schema::hasColumn('header_settings', 'show_notice_ticker')) {
+                $table->boolean('show_notice_ticker')->default(true)->after('action_buttons');
+            }
+            if (!Schema::hasColumn('header_settings', 'notice_ticker_limit')) {
+                $table->integer('notice_ticker_limit')->default(10)->after('show_notice_ticker');
+            }
         });
     }
 

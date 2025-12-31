@@ -38,3 +38,10 @@ fix_*.php
 
 # Deployment folder (not needed in repo)
 /deployment/
+*.php
+*.php
+*.php
+database/migrations/2025_12_31_080955_add_theme_key_to_theme_showcases_table.php
+*.php
+database/migrations/2025_12_30_174500_add_notice_ticker_settings_to_header_settings_table.php
+*.php

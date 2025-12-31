@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @php
         $headerSetting = \App\Models\HeaderSetting::first();
-        $siteTitle = $headerSetting?->site_name ?? 'Barishal Cantonment Public School & College';
+        $siteTitle = $headerSetting?->site_name ?? env('APP_NAME', 'Laragon');
     @endphp
     <title>@yield('title', $siteTitle)</title>
 
@@ -546,7 +546,7 @@
                     });
                 }
             });
-    });
+        });
     </script>
 
     <!-- Popup Modal Script -->
