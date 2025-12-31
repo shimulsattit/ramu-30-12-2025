@@ -132,12 +132,20 @@
                         $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
                     })->where('is_active', true)->with('children')->orderBy('order')->get();
                 @endphp
+                
+                {{-- DEBUG VISIBILITY --}}
+                <li class="nav-item">
+                    <span style="color: yellow; font-weight: bold; padding: 10px;">
+                        DEBUG: Menus Found: {{ $menus->count() }}
+                    </span>
+                </li>
+
                 @forelse($menus as $menu)
                     @if($menu->children->count() > 0)
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="{{ $menu->url ?? '#' }}"
                                 id="navbarDropdown{{ $menu->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                style="@if($menu->is_highlighted && $menu->highlight_color) background-color: {{ $menu->highlight_color }} !important; border-radius: 5px; @endif">
+                                style="color: white !important; font-weight: bold; background: rgba(0,0,0,0.1); margin: 0 5px;">
                                 {{ $menu->title }}
                             </a>
                             <ul class="dropdown-menu shadow" aria-labelledby="navbarDropdown{{ $menu->id }}">
@@ -156,7 +164,7 @@
                     @else
                         <li class="nav-item">
                             <a class="nav-link" href="{{ $menu->url ?? '#' }}" 
-                                style="@if($menu->is_highlighted && $menu->highlight_color) background-color: {{ $menu->highlight_color }} !important; border-radius: 5px; @endif">
+                                style="color: white !important; font-weight: bold; background: rgba(0,0,0,0.1); margin: 0 5px;">
                                 {{ $menu->title }}
                             </a>
                         </li>
