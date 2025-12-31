@@ -5,7 +5,7 @@
         </x-slot>
 
         <div
-            class="aspect-video w-full rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800">
+            class="w-full h-[500px] rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800">
             @if($embedUrl)
                 <iframe class="w-full h-full" src="{{ $embedUrl }}" title="Website Tutorial" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
