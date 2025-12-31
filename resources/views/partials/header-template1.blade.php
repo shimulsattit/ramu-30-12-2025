@@ -138,7 +138,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="{{ $menu->url ?? '#' }}"
                                 id="navbarDropdown{{ $menu->id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                style="color: white !important; font-weight: bold; background: rgba(0,0,0,0.1); margin: 0 5px;">
+                                style="@if($menu->is_highlighted && $menu->highlight_color) background-color: {{ $menu->highlight_color }} !important; border-radius: 5px; @endif">
                                 {{ $menu->title }}
                             </a>
                             <ul class="dropdown-menu shadow" aria-labelledby="navbarDropdown{{ $menu->id }}">
@@ -157,7 +157,7 @@
                     @else
                         <li class="nav-item">
                             <a class="nav-link" href="{{ $menu->url ?? '#' }}" 
-                                style="color: white !important; font-weight: bold; background: rgba(0,0,0,0.1); margin: 0 5px;">
+                                style="@if($menu->is_highlighted && $menu->highlight_color) background-color: {{ $menu->highlight_color }} !important; border-radius: 5px; @endif">
                                 {{ $menu->title }}
                             </a>
                         </li>

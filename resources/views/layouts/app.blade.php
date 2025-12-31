@@ -142,8 +142,8 @@
 
         .navbar-custom {
             background-color: var(--navbar-bg-color) !important;
-            padding: 0.5rem 0 !important;
-            min-height: 60px;
+            padding: 0.25rem 0 !important;
+            min-height: 50px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
@@ -156,7 +156,7 @@
             color: white !important;
             font-weight: 500;
             font-size: 0.9rem;
-            padding: 8px 14px !important;
+            padding: 6px 12px !important;
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             position: relative;
