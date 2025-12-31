@@ -137,6 +137,7 @@
                         $q->whereNull('parent_id')->orWhere('parent_id', 0)->orWhere('parent_id', '');
                     })->where('is_active', true)->with('children')->orderBy('order')->get();
                 @endphp
+                <li class="nav-item"><span class="nav-link" style="color: yellow !important; font-weight: bold;">DEBUG: DEFAULT ({{ $menus->count() }})</span></li>
                 @forelse($menus as $menu)
                     @if($menu->children->count() > 0)
                         <li class="nav-item dropdown">

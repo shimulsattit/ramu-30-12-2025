@@ -498,10 +498,22 @@
     @endphp
 
     @if($currentTemplate === 'template_1')
+        <div
+            style="background: red; color: white; text-align: center; padding: 5px; font-weight: bold; z-index: 9999; position: relative;">
+            DEBUG: Active Template is TEMPLATE_1
+        </div>
         @include('partials.header-template1')
     @elseif($currentTemplate === 'template_2')
+        <div
+            style="background: blue; color: white; text-align: center; padding: 5px; font-weight: bold; z-index: 9999; position: relative;">
+            DEBUG: Active Template is TEMPLATE_2
+        </div>
         @include('partials.header-template2')
     @elseif($currentTemplate === 'template_3')
+        <div
+            style="background: green; color: white; text-align: center; padding: 5px; font-weight: bold; z-index: 9999; position: relative;">
+            DEBUG: Active Template is TEMPLATE_3
+        </div>
         @include('partials.header-template3')
     @else
         @include('partials.header')
